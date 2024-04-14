@@ -1,20 +1,53 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SignController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PenjualanController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [ProdukController::class, 'main']);
+Route::get('/barang', [ProdukController::class, 'index']);
+Route::get('/add-produk', [ProdukController::class, 'create']);
+Route::post('/add-produk', [ProdukController::class, 'store']);
+
+Route::get('/edit-produk/{produk_id}', [ProdukController::class, 'edit']);
+Route::put('/edit-produk/{produk_id}', [ProdukController::class, 'update']);
+
+Route::get('/delete-produk/{produk_id}', [ProdukController::class, 'destroy']);
+
+
+Route::get('/pelanggan', [PelangganController::class, 'index']);
+Route::get('/delete-pelangan/{pelanggan_id}', [PelangganController::class, 'destroy']);
+Route::get('/pembelian', [PelangganController::class, 'create'])->middleware('cekbelipage');
+
+Route::post('/proses', [PelangganController::class, 'proses']);
+Route::get('/pembelian/verifikasi', [PelangganController::class, 'lanjutan'])->middleware('cekpembelian');
+Route::post('/pembelian/verifikasi', [PelangganController::class, 'finalisasi'])->middleware('cekpembelian');
+
+Route::get('/pembelian/forget', [PelangganController::class, 'forgetSession'])->name('pembelian.forget');
+
+Route::get('/penjualan', [PembelianController::class, 'index']);
+Route::get('/detail-penjualan/{penjualan_id}', [PembelianController::class, 'show']);
+Route::get('/downloadStruk', [PelangganController::class, 'downloadStruk']);
+
+Route::get('/history', [PelangganController::class, 'history']);
+Route::get('/detail-struk/{struk_id}', [PelangganController::class, 'showHistory']);
+Route::get('/print', function () {
+    return view('layouts.struk.print', [
+        'title' => 'Print'
+    ]);
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/sign-in', [SignController::class, 'signin']);
+Route::post('/sign-in', [SignController::class, 'login']);
+Route::get('/sign-up', [SignController::class, 'signup']);
+Route::post('/sign-up', [SignController::class, 'register']);
+Route::get('/testing', function () {
+    $currentTime = Carbon::now();
+    return view('layouts.sign-in', [
+        'title' => 'Print',
+        'currentTime' => $currentTime
+    ]);
 });
-
-require __DIR__.'/auth.php';
