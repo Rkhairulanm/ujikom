@@ -4,27 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreatePelanggansTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('pelanggans', function (Blueprint $table) {
-            $table->id('pelanggan_id');
+            $table->bigIncrements('pelanggan_id');
             $table->string('nama_pelanggan');
-            $table->text('alamat');
-            $table->string('telpon', 15);
+            $table->text('alamat')->nullable();
+            $table->string('telpon')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('pelanggans');
     }
-};
+}

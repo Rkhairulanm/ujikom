@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pembelians', function (Blueprint $table) {
-            $table->unsignedBigInteger('struk_id');
-            $table->foreign('struk_id')->references('struk_id')->on('struks');
+            $table->unsignedBigInteger('struk_id')->nullable()->after('pelanggan_id');
+            $table->foreign('struk_id')->references('struk_id')->on('struks')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -24,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('pembelians', function (Blueprint $table) {
             $table->dropForeign('pembelians_struk_id_foreign');
+            $table->dropColumn('struk_id');
             //
         });
     }

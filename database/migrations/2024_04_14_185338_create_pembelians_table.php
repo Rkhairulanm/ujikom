@@ -1,31 +1,29 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
+class CreatePembeliansTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('pembelians', function (Blueprint $table) {
-            $table->id('id_pembelian');
-            $table->string('nama_pelanggan');
+            $table->bigIncrements('pembelian_id');
             $table->integer('jumlah');
             $table->decimal('total', 10, 2);
+            $table->integer('pembayaran');
             $table->string('keterangan')->nullable();
             $table->timestamps();
         });
+
+        // Create triggers
+
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('pembelians');
     }
-};
+}

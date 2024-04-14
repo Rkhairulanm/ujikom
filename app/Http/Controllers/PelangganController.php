@@ -61,9 +61,6 @@ class PelangganController extends Controller
 
         return redirect('/pembelian/verifikasi');
     }
-
-
-
     public function lanjutan()
     {
         $produkData = session('produk_data');
