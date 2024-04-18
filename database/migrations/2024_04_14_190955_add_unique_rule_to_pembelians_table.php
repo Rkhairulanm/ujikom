@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('pembelians', function (Blueprint $table) {
             $table->bigInteger('produk_id')->unsigned()->after('pembayaran');
             $table->bigInteger('pelanggan_id')->unsigned()->after('produk_id');
-            $table->foreign('produk_id')->references('produk_id')->on('produks');
+            $table->foreign('produk_id')->references('produk_id')->on('produks')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('pelanggan_id')->references('pelanggan_id')->on('pelanggans')->onDelete('cascade')->onUpdate('cascade');
         });
     }

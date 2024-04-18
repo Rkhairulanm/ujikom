@@ -33,11 +33,11 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html "
+            <div class="navbar-brand m-0" href="#"
                 target="_blank">
                 <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
                 <span class="ms-1 font-weight-bold">Cash-E App</span>
-            </a>
+        </div>
         </div>
         <hr class="horizontal dark mt-0">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Fitur Admin</h6>
@@ -159,17 +159,20 @@
                         <span class="nav-link-text ms-1">Pembelian</span>
                     </a>
                 </li>
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mt-3">Registrasi</h6>
-                <li class="nav-item">
-                    <a class="nav-link {{ $title == 'asd' ? 'active' : '' }}" href="/sign-up">
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="{{ $title == 'asd' ? 'text-white' : '' }} fa-solid fa-user-plus me-1 ps-set"
-                                style="color: #000000"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Register</span>
-                    </a>
-                </li>
+                @if (auth()->user()->role_id == 1)
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mt-3">Registrasi</h6>
+                    <li class="nav-item">
+                        <a class="nav-link {{ $title == 'asd' ? 'active' : '' }}" href="{{ route('register') }}">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="{{ $title == 'asd' ? 'text-white' : '' }} fa-solid fa-user-plus me-1 ps-set"
+                                    style="color: #000000"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Register</span>
+                        </a>
+                    </li>
+                @endif
+
                 {{-- <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
                 </li>
@@ -306,11 +309,63 @@
 
                     </div>
                     <ul class="navbar-nav  justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa-solid fa-right-from-bracket me-sm-1"></i>
-                                <span class="d-sm-inline d-none">Logout </span>
+
+                        @if ($title === 'Pembelian')
+                            <!-- Form pencarian -->
+                            <li class="nav-item dropdown d-flex align-items-center mt-3">
+                                <form action="" method="get">
+                                    <div class="pe-md-3 d-flex align-items-center float-end">
+                                        <div class="input-group">
+                                            <span style="max-height: 42px" class="input-group-text text-body"><i
+                                                    class="fas fa-search" aria-hidden="true"></i></span>
+                                            <input style="max-height: 42px;" type="text" class="form-control"
+                                                placeholder="Masukan Nama Produk" name="keyword">
+                                            <button class="btn btn-outline-primary btn-primary"
+                                                type="submit">Cari</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+
+                            <!-- Form pilihan kategori -->
+                            <form action="" method="GET" class="pt-3 me-4">
+                                <div class="input-group">
+                                    <select class="form-select" name="category"
+                                        style="max-height: 42px;width: 140px ">
+                                        <option value="" selected>Pilih kategori...</option>
+                                        @if (isset($kategori))
+                                            @foreach ($kategori as $category)
+                                                <option value="{{ $category->kategori_id }}">
+                                                    {{ $category->kategori }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <button class="btn btn-outline-primary" type="submit">Filter</button>
+                                </div>
+                            </form>
+                        @endif
+
+
+                        <li class="nav-item dropdown d-flex align-items-center">
+                            <a class="nav-link dropdown-toggle text-body font-weight-bold px-0" href="#"
+                                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @if (Auth::check())
+                                    <i class="fas fa-user me-sm-1"></i>
+                                    <span class="d-sm-inline d-none">{{ Auth::user()->name }}</span>
+                                @endif
+
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                <a class="dropdown-item" href="/logout"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            </ul>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -338,36 +393,15 @@
                                 </script>,
                                 made with <i class="fa fa-heart"></i> by
                                 <a href="https://www.creative-tim.com" class="font-weight-bold"
-                                    target="_blank">Creative Tim</a>
+                                    target="_blank">Rkhairulnm</a>
                                 for a better web.
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com" class="nav-link text-muted"
-                                        target="_blank">Creative Tim</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
-                                        target="_blank">About Us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
-                                        target="_blank">Blog</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                                        target="_blank">License</a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
     </main>
-    </div>
 
     <!--   Core JS Files   -->
     <script src="../assets/js/core/popper.min.js"></script>

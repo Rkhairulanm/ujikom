@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Struk;
 use App\Models\Produk;
+use App\Models\Kategori;
 use Barryvdh\DomPDF\PDF;
 use App\Models\Pelanggan;
 use App\Models\Pembelian;
@@ -21,7 +22,8 @@ class PelangganController extends Controller
     {
         $keyword = $request->keyword;
         $pelanggan = Pelanggan::where('nama_pelanggan', 'LIKE', '%' . $keyword . '%')
-            ->get()->all();
+            ->paginate(10)
+            ->all();
         return view('layouts.pelanggan', [
             'title' => 'Pelanggan',
             'pelanggan' => $pelanggan
@@ -29,18 +31,35 @@ class PelangganController extends Controller
     }
     public function create(Request $request)
     {
-        // Melupakan session pembelian jika sudah ada
-        $request->session()->forget('pembelian_data');
 
-        $produk = Produk::get();
+        $keyword = $request->keyword;
+        $category_id = $request->category;
+
+        $query = Produk::query();
+        if ($keyword) {
+            $query->where('nama_produk', 'LIKE', '%' . $keyword . '%');
+        }
+        if ($category_id) {
+            $query->whereHas('kategori', function ($query) use ($category_id) {
+                $query->where('kategori_id', $category_id);
+            });
+        }
+
+        $produk = $query->with('kategori')->get();
+
+        $kategori = Kategori::get();
+
         return view('layouts.pembelian', [
             'title' => 'Pembelian',
             'produk' => $produk,
+            'kategori' => $kategori
         ]);
     }
 
+
     public function proses(Request $request)
     {
+        $request->session()->forget('pembelian_data');
         $validated = $request->validate([
             'produk' => 'required'
         ]);

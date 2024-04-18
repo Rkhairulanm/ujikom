@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'admin' => App\Http\Middleware\adminOnly::class,
+            'auth' => App\Http\Middleware\authenticate::class,
             'cekpembelian' => App\Http\Middleware\CheckPembelian::class,
             'cekbelipage' => App\Http\Middleware\CheckBeliPage::class,
         ]);

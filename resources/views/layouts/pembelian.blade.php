@@ -27,6 +27,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
+                                        <p class="card-text">{{ $k->kategori->kategori }}</p>
                                         <h6 class="text-md">{{ $k->nama_produk }}</h6>
                                         <p class="card-text">Rp.{{ $k->harga }}</p>
                                         @if ($k->stok <= 0)

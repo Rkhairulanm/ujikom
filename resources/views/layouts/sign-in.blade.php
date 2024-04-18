@@ -22,6 +22,7 @@
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 </head>
 
 <body class="">
@@ -37,28 +38,34 @@
                                     <p class="mb-0">Enter your email and password to sign in</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form" method="POST">
+                                    <form method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label>Email</label>
                                         <div class="mb-3">
-                                            <input type="email" class="form-control" placeholder="Email"
-                                                aria-label="Email" aria-describedby="email-addon" required>
+                                            <x-input-label for="email" :value="__('Email')" />
+                                            <x-text-input id="email" class="block mt-1 w-full form-control"
+                                                type="email" name="email" :value="old('email')" required autofocus
+                                                autocomplete="username" />
+                                            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red" />
                                         </div>
-                                        <label>Password</label>
-                                        <div class="">
-                                            <input type="password" class="form-control" placeholder="Password"
-                                                aria-label="Password" aria-describedby="password-addon" required>
+                                        <div class="mt-4">
+                                            <x-input-label for="password" :value="__('Password')" />
+
+                                            <x-text-input id="password" class="block mt-1 w-full form-control"
+                                                type="password" name="password" required
+                                                autocomplete="current-password" />
+
+                                            <x-input-error :messages="$errors->get('password')" class="mt-2 text-red" />
                                         </div>
-                                        @if (Session::has('status'))
+                                        {{-- @if (Session::has('status'))
                                             <div class="ps-1 pt-3 text-danger" role="alert">
                                                 <div class="d-flex justify-content-between">
                                                     <div>{{ Session::get('message') }}</div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        @endif --}}
                                         <div class="text-center mt-3">
-                                            <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign
-                                                in</button>
+                                            <button type="submit"
+                                                class="btn bg-gradient-info w-100 mt-4 mb-0">{{ __('Sign In') }}</button>
                                         </div>
                                     </form>
                                 </div>

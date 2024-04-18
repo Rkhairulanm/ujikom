@@ -14,7 +14,8 @@ class Produk extends Model
         'nama_produk',
         'harga',
         'stok',
-        'image'
+        'image',
+        'kategori_id'
     ];
 
     public function penjualan()
@@ -35,5 +36,9 @@ class Produk extends Model
     public function detailPenjualans()
     {
         return $this->hasMany(DetailPenjualan::class, 'produk_id');
+    }
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id', 'kategori_id');
     }
 }

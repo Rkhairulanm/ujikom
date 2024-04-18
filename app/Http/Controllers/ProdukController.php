@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Struk;
 use App\Models\Produk;
+use App\Models\Kategori;
 use App\Models\Pembelian;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ProdukController extends Controller
 {
@@ -17,6 +18,7 @@ class ProdukController extends Controller
     {
         $keyword = $request->keyword;
         $produk = Produk::where('nama_produk', 'LIKE', '%' . $keyword . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         return view('layouts.barang', [
             'title' => 'Produk',
@@ -67,8 +69,10 @@ class ProdukController extends Controller
     }
     public function create()
     {
+        $kategori = Kategori::get();
         return view('form_produk.add_barang', [
-            'title' => 'Produk'
+            'title' => 'Produk',
+            'kategori' => $kategori
         ]);
     }
     public function store(Request $request)
@@ -76,11 +80,19 @@ class ProdukController extends Controller
         $newName = '';
         if ($request->hasFile('image')) {
             $newName = $request->nama_produk . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
-            $request->file('image')->storeAs('image', $newName); // Simpan gambar ke direktori penyimpanan yang sudah dikonfigurasi dalam filesystems.php
+            $request->file('image')->storeAs('image', $newName);
         }
 
         $data = $request->all();
-        $data['image'] = $newName; // Tambahkan nama file gambar ke data yang akan disimpan ke database
+        $data['image'] = $newName;
+
+        if ($request->kategori_id == 'new') {
+            $newCategory = Kategori::create(['kategori' => $request->new_category]);
+            $data['kategori_id'] = $newCategory->kategori_id;
+        } else {
+            $data['kategori_id'] = $request->kategori_id;
+        }
+
         $produk = Produk::create($data);
 
         if ($produk) {
@@ -90,6 +102,7 @@ class ProdukController extends Controller
 
         return redirect('/add-produk');
     }
+
 
     public function edit($produk_id)
     {

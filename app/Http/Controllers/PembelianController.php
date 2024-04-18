@@ -12,7 +12,7 @@ class PembelianController extends Controller
 {
     public function index()
     {
-        $produk = Produk::with('pembelian')->paginate(15);
+        $produk = Produk::with('pembelian')->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')   ->paginate(15);
         return view('layouts.penjualan', [
             'title' => 'Transaksi',
             'produk' => $produk
@@ -26,12 +26,12 @@ class PembelianController extends Controller
             'produk' => $produk
         ]);
     }
-    public function kelolaPembelian() {
+    public function kelolaPembelian()
+    {
         $pembelian = Pembelian::all();
         return view('layouts.pembelian-kelola', [
             'title' => 'Kelola Pembelian',
             'pembelian' => $pembelian
         ]);
     }
-
 }

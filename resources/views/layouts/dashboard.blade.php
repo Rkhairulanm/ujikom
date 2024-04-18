@@ -100,7 +100,7 @@
                                     <p class="mb-1 pt-2 text-bold">Wellcome</p>
                                     <h5 class="font-weight-bolder">Nama Toko</h5>
                                     <p class="mb-3 mt-2">Mulai Mengelola Produk</p>
-                                    <a href="/produk"><button class="btn btn-primary">Kelola Produk</button></a>
+                                    <a href="/barang"><button class="btn btn-primary">Kelola Produk</button></a>
                                 </div>
                             </div>
                             <div class="col-lg-5 ms-auto text-center mt-5 mt-lg-0">
@@ -128,7 +128,7 @@
                                         <h5 class="font-weight-bolder">{{ $produkTeratasInfo->nama_produk }}</h5>
                                         <p class="mb-3 mt-2">Total Pemesanan : {{ $totalPenjualanTeratas }}</p>
                                         <a class="text-secondar text-sm font-weight-bold mb-0 icon-move-right mt-auto"
-                                            href="javascript:;">
+                                            href="/detail-penjualan/{{ $produkTeratasInfo->produk_id }}">
                                             Cek Pemesanan
                                             <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
                                         </a>

@@ -18,11 +18,25 @@
                         </div>
 
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form id="myForm" action="/proses" method="POST"    >
                                 @csrf
                                 <div class="mb-3">
                                     <label for="nama_produk" class="form-label text-sm required-label">Nama Produk</label>
                                     <input type="text" class="form-control" name="nama_produk" id="nama_produk" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kategori_id" class="form-label text-sm">Kategori</label>
+                                    <select class="form-select" name="kategori_id" id="kategori_id">
+                                        <option value="" selected>Pilih kategori...</option>
+                                        @foreach ($kategori as $category)
+                                            <option value="{{ $category->kategori_id }}">{{ $category->kategori }}</option>
+                                        @endforeach
+                                        <option value="new">Tambah Kategori Baru</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="newCategoryInput" style="display: none;">
+                                    <label for="new_category" class="form-label text-sm">Masukkan Kategori Baru</label>
+                                    <input type="text" class="form-control" name="new_category" id="new_category">
                                 </div>
                                 <div class="mb-3">
                                     <label for="harga" class="form-label text-sm required-label">Harga</label>
@@ -38,7 +52,8 @@
                                         accept="image/*" onchange="previewImage(event)" required>
                                 </div>
                                 <div id="imagePreview" class="mb-3" style="display: none;">
-                                    <img src="#" class="rounded" alt="Preview" style="max-width: 100%; max-height: 200px;">
+                                    <img src="#" class="rounded" alt="Preview"
+                                        style="max-width: 100%; max-height: 200px;">
                                 </div>
                                 <a href="/barang" class="btn bg-gradient-danger ">Back</a>
                                 <button type="submit" class="btn btn-custom float-end">Submit</button>
@@ -68,5 +83,16 @@
                 document.getElementById('imagePreview').style.display = 'none'; // Sembunyikan image preview
             }
         }
+    </script>
+    <script>
+        document.getElementById('kategori_id').addEventListener('change', function() {
+            var newCategoryInput = document.getElementById('newCategoryInput');
+            var selectedOption = this.value;
+            if (selectedOption === 'new') {
+                newCategoryInput.style.display = 'block';
+            } else {
+                newCategoryInput.style.display = 'none';
+            }
+        });
     </script>
 @endsection

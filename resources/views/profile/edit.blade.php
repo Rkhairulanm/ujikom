@@ -23,7 +23,12 @@
                 <div class="max-w-xl">
                     @include('profile.partials.delete-user-form')
                 </div>
-            </div>
+            </div><br>
+            <a href="/" class="mt-3">
+                 <x-danger-button class="ms-3">
+                    {{ __('Back') }}
+                </x-danger-button>
+            </a>
         </div>
     </div>
 </x-app-layout>
