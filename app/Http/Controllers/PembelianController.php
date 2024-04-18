@@ -14,7 +14,7 @@ class PembelianController extends Controller
     {
         $produk = Produk::with('pembelian')->orderBy('created_at', 'desc')->orderBy('created_at', 'desc')   ->paginate(15);
         return view('layouts.penjualan', [
-            'title' => 'Transaksi',
+            'title' => 'Detail Penjualan',
             'produk' => $produk
         ]);
     }
@@ -22,7 +22,7 @@ class PembelianController extends Controller
     {
         $produk = Produk::with('pembelian.pelanggan')->where('produk_id', $id)->first();
         return view('layouts.pembelian-detail', [
-            'title' => 'Detail Pembelian',
+            'title' => 'Detail Penjualan',
             'produk' => $produk
         ]);
     }

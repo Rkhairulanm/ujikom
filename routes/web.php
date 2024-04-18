@@ -43,16 +43,18 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/pelanggan', [PelangganController::class, 'index']);
+    Route::get('/detail-pelanggan/{pelaggan_id}', [PelangganController::class, 'show'])->name('pelanggan.detail');
     Route::get('/delete-pelangan/{pelanggan_id}', [PelangganController::class, 'destroy']);
     Route::get('/pembelian', [PelangganController::class, 'create'])->middleware('cekbelipage');
 
     Route::post('/proses', [PelangganController::class, 'proses']);
-    Route::get  ('/pembelian/verifikasi', [PelangganController::class, 'lanjutan'])->middleware('cekpembelian');
+    Route::get('/pembelian/verifikasi', [PelangganController::class, 'lanjutan'])->middleware('cekpembelian');
     Route::post('/pembelian/verifikasi', [PelangganController::class, 'finalisasi'])->middleware('cekpembelian');
 
     Route::get('/pembelian/forget', [PelangganController::class, 'forgetSession'])->name('pembelian.forget');
 
     Route::get('/penjualan', [PembelianController::class, 'index']);
+    Route::post('/pembayaran/{pelanggan_id}', [PelangganController::class, 'pembayaran']);
     Route::get('/detail-penjualan/{penjualan_id}', [PembelianController::class, 'show']);
     Route::get('/downloadStruk', [PelangganController::class, 'downloadStruk']);
 

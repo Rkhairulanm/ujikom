@@ -1,6 +1,7 @@
 @extends('main')
 
 @section('content')
+
     <div class="container-fluid py-4">
         {{-- @foreach ($produk as $item) --}}
         <div class="row">
@@ -98,7 +99,7 @@
                             <div class="col-lg-6">
                                 <div class="d-flex flex-column h-100">
                                     <p class="mb-1 pt-2 text-bold">Wellcome</p>
-                                    <h5 class="font-weight-bolder">Nama Toko</h5>
+                                    <h5 class="font-weight-bolder">{{ Auth::user()->name }}</h5>
                                     <p class="mb-3 mt-2">Mulai Mengelola Produk</p>
                                     <a href="/barang"><button class="btn btn-primary">Kelola Produk</button></a>
                                 </div>

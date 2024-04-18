@@ -56,6 +56,8 @@
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder ">Alamat</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder ">
                                                 No Telpon</th>
+                                            <th class="text-uppercase text-dark text-sm font-weight-bolder ">
+                                                Status</th>
                                             <th class="text-uppercase text-dark text-sm font-weight-bolder ">Aksi
                                             </th>
                                         </tr>
@@ -87,8 +89,40 @@
                                                             {{ $k->telpon }}</h6>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <h6 class="text-secondary text-sm font-weight-bold ps-2">
+                                                            @php
+                                                                $kasbon = false;
+                                                                $totalPembelian = $k->pembelian->sum('total');
+                                                                $totalPembayaran = $k->pembelian->sum('pembayaran');
+                                                                if (
+                                                                    $totalPembayaran < $totalPembelian &&
+                                                                    $totalPembayaran != 0
+                                                                ) {
+                                                                    echo '<span class="badge badge-sm bg-gradient-warning">Belum Lunas</span>';
+                                                                } else {
+                                                                    foreach ($k->pembelian as $pembelian) {
+                                                                        if ($pembelian->pembayaran === null) {
+                                                                            $kasbon = true;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    if ($kasbon) {
+                                                                        echo '<span class="badge badge-sm bg-gradient-danger">Kasbon</span>';
+                                                                    } else {
+                                                                        echo '<span class="badge badge-sm bg-gradient-success">Lunas</span>';
+                                                                    }
+                                                                }
+                                                            @endphp
+                                                        </h6>
+                                                    </div>
+                                                </td>
+
+
+
                                                 <td class="align-middle">
-                                                    <a href="#"><span
+                                                    <a href="/detail-pelanggan/{{ $k->pelanggan_id }}"><span
                                                             class="btn bg-gradient-info mx-2">Detail</span></a>
                                                     <a href="/delete-pelangan/{{ $k->pelanggan_id }}"
                                                         onclick="return confirm('Are You sure you want to Delete this product?')"><span

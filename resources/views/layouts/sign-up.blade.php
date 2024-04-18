@@ -62,15 +62,14 @@
                                             autocomplete="username" />
                                         <x-input-error :messages="$errors->get('email')" class="mt-2 text-red" />
                                     </div>
-                                    <div class="mt-3">
-                                        <x-input-label for="role" :value="__('Role')" />
-b                                            <option class="text-secondary opacity-5" value="" disabled selected>
+                                    <div class="mt-5">
+                                        <select class="form-select form-control" name="role" required>
+                                            <option class="text-secondary opacity-5" value="" disabled selected>
                                                 Select Role</option>
                                             @foreach ($role as $k)
                                                 <option value="{{ $k->role_id }}">{{ $k->role }}</option>
                                             @endforeach
                                         </select>
-                                        <x-input-error :messages="$errors->get('role')" class="mt-2 text-red" />
                                     </div>
                                     <div class="mt-3">
                                         <x-input-label for="password" :value="__('Password')" />

@@ -13,7 +13,7 @@ class CreatePembeliansTable extends Migration
             $table->bigIncrements('pembelian_id');
             $table->integer('jumlah');
             $table->decimal('total', 10, 2);
-            $table->integer('pembayaran');
+            $table->integer('pembayaran')->nullable();
             $table->string('keterangan')->nullable();
             $table->timestamps();
         });

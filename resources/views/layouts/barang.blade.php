@@ -65,16 +65,16 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
-                                                        <h6 class="ps-2 text-secondary text-sm font-weight-bold">
-                                                            {{ $k->nama_produk }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
                                                         <img src="{{ asset('/storage/image/' . $k->image) }}"
                                                             class="card-img"
                                                             style="object-fit: cover;max-width: 100px; max-height: 100px;"
                                                             alt="...">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <h6 class="ps-2 text-secondary text-sm font-weight-bold">
+                                                            {{ $k->nama_produk }}</h6>
                                                     </div>
                                                 </td>
 

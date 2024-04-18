@@ -35,7 +35,8 @@
         <div class="col">
             <center>
                 <h3 class="mt-3 text-center d-print-none">Struk Pembelian</h3>
-                    <a href="/history" class="btn btn-danger d-print-none mt-3" onclick="unduhPembelian()">Lihat Pembelian</a>
+                <a href="/history" class="btn btn-danger d-print-none mt-3" onclick="unduhPembelian()">Lihat
+                    Pembelian</a>
             </center>
             <hr>
         </div>
@@ -45,7 +46,7 @@
             <div class="card shadow-lg">
                 <div class="card-body">
                     <center>
-                        <h5 class="text-bold">NamaToko</h5>
+                        <h5 class="text-bold">{{ Auth::user()->name }}</h5>
                         {{-- if has img --}}
                         {{-- <img src="{{ asset('/storage/image/' . $produk->image) }}" alt="" class="rounded-circle"
                             style="max-width: 100; max-height:100px"> --}}
@@ -67,9 +68,28 @@
                     <div class="dashed-line"></div>
                     <h5 class="text-dark">Total <span class="float-end">Rp.{{ $totalHargaKeseluruhan }}</span></h5>
                     <div class="dashed-line"></div>
-                    <h6 class="text-secondary">Bayar <span class="float-end">Rp.{{ $bayar }}</span></h6>
-                    <h6 class="text-secondary">Kembalian <span
-                            class="float-end">{{ $bayar - $totalHargaKeseluruhan }}</span></h6>
+                    <h6 class="text-secondary">Bayar
+                        @if ($bayar !== null)
+                            <span class="float-end">Rp.{{ $bayar }}</span>
+                        @else
+                            <span class="float-end">Kasbon</span>
+                        @endif
+                    </h6>
+                    @if ($bayar !== null)
+                        <h6 class="text-secondary">Kembalian <span
+                                class="float-end">Rp.{{ $bayar - $totalHargaKeseluruhan }}</span></h6>
+                    @endif
+                    <h6 class="text-secondary mx-auto d-flex justify-content-center mt-4">
+                        <span class="float-end">
+                            @if ($bayar !== null)
+                                @if ($bayar - $totalHargaKeseluruhan >= 0)
+                                    <span class="badge bg-gradient-success">Lunas</span>
+                                @endif
+                            @else
+                                <span class="badge bg-gradient-danger">Belum Bayar</span>
+                            @endif
+                        </span>
+                    </h6>
                 </div>
 
             </div>

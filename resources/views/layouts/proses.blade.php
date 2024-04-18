@@ -40,11 +40,11 @@
                                                         id="nama_pelanggan" required>
                                                 </div>
                                                 <label for="pembayaran"
-                                                    class="form-label text-sm required-label">Bayar</label>
+                                                    class="form-label text-sm">Bayar</label>
                                                 <div class="mb-3 input-group">
                                                     <input style="max-height: 40px" type="number" class="form-control rounded-end" placeholder="Bayar"
                                                         aria-label="Bayar" aria-describedby="button-addon2" name="pembayaran" id="pembayaran"
-                                                        required>
+                                                        >
                                                     <button class="btn btn-primary" type="button" id="button-addon2"
                                                         onclick="setTotalHarga()">Uang Pas</button>
                                                 </div>

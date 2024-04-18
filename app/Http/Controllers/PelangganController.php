@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\DetailPenjualan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
 
@@ -22,6 +23,7 @@ class PelangganController extends Controller
     {
         $keyword = $request->keyword;
         $pelanggan = Pelanggan::where('nama_pelanggan', 'LIKE', '%' . $keyword . '%')
+            ->with('pembelian')
             ->paginate(10)
             ->all();
         return view('layouts.pelanggan', [
@@ -29,6 +31,47 @@ class PelangganController extends Controller
             'pelanggan' => $pelanggan
         ]);
     }
+    public function show(Request $request, $id)
+    {
+        $pelanggan = Pelanggan::with('pembelian.produk')->where('pelanggan_id', $id)->first();
+
+        $pembayaran = Pembelian::where('pelanggan_id', $id)->first('pembayaran');
+
+        return view('layouts.pelanggan-detail', [
+            'title' => 'Pelanggan',
+            'pelanggan' => $pelanggan,
+            'pembayaran' => $pembayaran,
+        ]);
+    }
+
+    public function pembayaran(Request $request, $id)
+    {
+        $request->validate([
+            'pembayaran' => 'required|numeric|min:0',
+        ]);
+
+        // Temukan pembelian berdasarkan pelanggan_id
+        $pembelian = Pembelian::where('pelanggan_id', $id)->firstOrFail();
+
+        // Dapatkan nilai pembayaran yang ada
+        $pembayaranLama = $pembelian->pembayaran;
+
+        // Dapatkan nilai pembayaran yang baru dari input pengguna
+        $pembayaranBaru = $request->pembayaran;
+
+        // Hitung total pembayaran baru dengan menambahkan nilai pembayaran baru ke nilai pembayaran yang lama
+        $totalPembayaranBaru = $pembayaranLama + $pembayaranBaru;
+
+        // Perbarui kolom pembayaran dengan total pembayaran baru
+        $pembelian->update([
+            'pembayaran' => $totalPembayaranBaru,
+        ]);
+
+        // Redirect kembali ke halaman detail pelanggan dengan pesan sukses
+        return Redirect::route('pelanggan.detail', $id)->with('status', 'success')->with('message', 'Pembayaran berhasil ditambahkan.');
+    }
+
+
     public function create(Request $request)
     {
 
@@ -236,7 +279,7 @@ class PelangganController extends Controller
         $struk = Struk::with(['pembelian.pelanggan'])
             ->where('struk', 'LIKE', '%' . $keyword . '%')
             ->get();
-        $title = 'Transaksi';
+        $title = 'Riwayat Transaksi';
         $now = now();
         $currentTime = $now->format('Y-m-d');
         return view('layouts.history', compact('struk', 'title', 'currentTime'));
