@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kategori_id')->after('harga')->nullable(true);
 
             // Definisikan kunci asing
-            $table->foreign('kategori_id')->references('kategori_id')->on('kategories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('kategori_id')->references('kategori_id')->on('kategories')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 

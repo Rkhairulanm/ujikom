@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
@@ -47,6 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete-pelangan/{pelanggan_id}', [PelangganController::class, 'destroy']);
     Route::get('/pembelian', [PelangganController::class, 'create'])->middleware('cekbelipage');
 
+    Route::get('/kategori', [KategoriController::class, 'index']);
+    Route::get('/kategori-detail/{kategori_id}', [KategoriController::class, 'show']);
+    Route::get('/kategori-hapus/{kategori_id}', [KategoriController::class, 'destroy']);
+    // Route::get('/kategori-tambah', [KategoriController::class, 'create']);
+    // Route::post('/kategori-tambah', [KategoriController::class, 'store']);
+
     Route::post('/proses', [PelangganController::class, 'proses']);
     Route::get('/pembelian/verifikasi', [PelangganController::class, 'lanjutan'])->middleware('cekpembelian');
     Route::post('/pembelian/verifikasi', [PelangganController::class, 'finalisasi'])->middleware('cekpembelian');
@@ -60,6 +67,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/history', [PelangganController::class, 'history']);
     Route::get('/detail-struk/{struk_id}', [PelangganController::class, 'showHistory']);
+
+    Route::get('/kelola-user', [SignController::class, 'index']);
+    Route::get('/delete-user/{id}', [SignController::class, 'sistem']);
+
     Route::get('/print', function () {
         return view('layouts.struk.print', [
             'title' => 'Print'

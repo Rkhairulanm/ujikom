@@ -54,4 +54,23 @@ class SignController extends Controller
             return back();
         }
     }
+        public function index(Request $request)
+    {
+        $keyword = $request->keyword;
+        $user = User::where('name', 'LIKE', '%' . $keyword . '%')
+            ->with('role')
+            ->get();
+        $title = 'Kelola User';
+        return view('layouts.kelola-user', compact('title', 'user'));
+    }
+    public function sistem($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        Session::flash('status', 'success');
+        Session::flash('message', 'user Deleted Successfully');
+
+        return redirect('/kelola-user');
+    }
 }

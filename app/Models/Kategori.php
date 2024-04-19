@@ -14,4 +14,9 @@ class Kategori extends Model
     protected $guarded = [];
 
     protected $primaryKey = 'kategori_id';
+
+    public function produk()
+    {
+        return $this->hasMany(Produk::class, 'kategori_id', 'kategori_id');
+    }
 }

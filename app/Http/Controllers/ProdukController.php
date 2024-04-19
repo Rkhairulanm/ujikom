@@ -20,9 +20,15 @@ class ProdukController extends Controller
         $produk = Produk::where('nama_produk', 'LIKE', '%' . $keyword . '%')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        $struk = Struk::get();
+
+
         return view('layouts.barang', [
             'title' => 'Produk',
-            'produk' => $produk
+            'produk' => $produk,
+            'struk' => $struk,
+
         ]);
     }
     public function main()
@@ -41,6 +47,21 @@ class ProdukController extends Controller
             ->groupBy('produk_id')
             ->orderByDesc('total_penjualan')
             ->get();
+
+        $jumlahKasbon = Pembelian::whereNull('pembayaran')->count();
+
+        // Hitung jumlah yang belum lunas dari database
+        $jumlahBelumLunas = Pembelian::where('pembayaran', '!=', null)
+            ->whereColumn('total', '>', 'pembayaran')
+            ->count();
+
+        // Hitung jumlah yang sudah lunas dari database
+        $jumlahLunas = Pembelian::where('pembayaran', '!=', null)
+            ->whereColumn('total', '=', 'pembayaran')
+            ->count();
+
+        $totalKasbonBelumLunasi = Pembelian::whereNull('pembayaran')->sum('total');
+
 
         // Ambil ID produk dengan penjualan terbanyak
         $produkTeratas = $totalPenjualanPerProduk->first();
@@ -65,7 +86,7 @@ class ProdukController extends Controller
         }
 
         $title = 'Dashboard';
-        return view('layouts.dashboard', compact('produkTeratasInfo', 'produk', 'totalStok', 'totalHarga', 'title', 'totalPenghasilan', 'totalPemesanan', 'totalPenjualanTeratas'));
+        return view('layouts.dashboard', compact('produkTeratasInfo', 'produk', 'totalStok', 'totalHarga', 'title', 'totalPenghasilan', 'totalPemesanan', 'totalPenjualanTeratas', 'totalKasbonBelumLunasi', 'jumlahKasbon', 'jumlahBelumLunas', 'jumlahLunas'));
     }
     public function create()
     {
@@ -77,31 +98,46 @@ class ProdukController extends Controller
     }
     public function store(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'kategori_id' => 'required',
+            // Tambahkan aturan validasi lainnya sesuai kebutuhan
+        ]);
+
         $newName = '';
-        if ($request->hasFile('image')) {
+        // Periksa apakah file gambar berhasil diunggah
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $newName = $request->nama_produk . '-' . now()->timestamp . '.' . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->storeAs('image', $newName);
+            // dd($newName);
         }
 
         $data = $request->all();
         $data['image'] = $newName;
 
+        // Jika kategori_id adalah 'new', buat kategori baru
         if ($request->kategori_id == 'new') {
             $newCategory = Kategori::create(['kategori' => $request->new_category]);
             $data['kategori_id'] = $newCategory->kategori_id;
-        } else {
-            $data['kategori_id'] = $request->kategori_id;
         }
 
+        // Simpan data produk
         $produk = Produk::create($data);
 
         if ($produk) {
+            // Jika penyimpanan berhasil
             Session::flash('status', 'success');
-            Session::flash('message', 'Produk Added Successfully');
+            Session::flash('message', 'Produk berhasil ditambahkan.');
+        } else {
+            // Jika penyimpanan gagal
+            Session::flash('status', 'error');
+            Session::flash('message', 'Gagal menambahkan produk. Silakan coba lagi.');
         }
 
         return redirect('/add-produk');
     }
+
 
 
     public function edit($produk_id)

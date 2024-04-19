@@ -84,10 +84,13 @@
                             @if ($bayar !== null)
                                 @if ($bayar - $totalHargaKeseluruhan >= 0)
                                     <span class="badge bg-gradient-success">Lunas</span>
+                                @elseif ($bayar - $totalHargaKeseluruhan != 0)
+                                    <span class="badge bg-gradient-warning">Belum Lunas</span>
                                 @endif
                             @else
                                 <span class="badge bg-gradient-danger">Belum Bayar</span>
                             @endif
+
                         </span>
                     </h6>
                 </div>

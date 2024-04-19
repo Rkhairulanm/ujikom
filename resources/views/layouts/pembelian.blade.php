@@ -14,8 +14,26 @@
                         </ul>
                     </div>
                 @endif
+                @php
+                    // Tentukan kelas kolom Bootstrap (col-lg-*) sesuai dengan jumlah item
+                    $totalItems = count($produk);
+                    switch ($totalItems) {
+                        case 1:
+                            $colClass = 'col-lg-12';
+                            break;
+                        case 2:
+                            $colClass = 'col-lg-6';
+                            break;
+                        case 3:
+                            $colClass = 'col-lg-4';
+                            break;
+                        default:
+                            $colClass = 'col-lg-3';
+                            break;
+                    }
+                @endphp
                 @foreach ($produk as $k)
-                    <div class="col-sm-6 col-lg-3 mb-4">
+                    <div class="col-sm-3 {{ $colClass }} mb-4">
                         <div class="card" style="width: 100%; position: relative;">
                             <!-- Checkbox untuk setiap produk -->
                             <input type="checkbox" name="produk[{{ $k->produk_id }}][checked]" id="produk{{ $k->produk_id }}"

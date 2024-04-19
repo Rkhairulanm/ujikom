@@ -18,7 +18,7 @@
                         </div>
 
                         <div class="card-body px-0 pt-0 pb-2 ps-4 me-4">
-                            <form id="myForm" action="/proses" method="POST"    >
+                            <form id="myForm" action="" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="nama_produk" class="form-label text-sm required-label">Nama Produk</label>
@@ -40,7 +40,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="harga" class="form-label text-sm required-label">Harga</label>
-                                    <input type="number" class="form-control" name="harga" id="harga" required>
+                                    <input type="number" class="form-control" max="9999999" name="harga" id="harga"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="stok" class="form-label text-sm required-label">Stok</label>

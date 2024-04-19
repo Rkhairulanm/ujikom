@@ -97,6 +97,17 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown" style="height: 50px">
+                    <a class="nav-link {{ $title == 'Kelola Kategori' ? 'active' : '' }}" href="/kategori"
+                        role="button" aria-expanded="false">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-list-alt"
+                                style="color: {{ $title == 'Kelola Kategori' ? '#ffffff' : '#111111' }};"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Kelola Kategori</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown" style="height: 50px">
                     <a class="nav-link {{ $title == 'Detail Penjualan' ? 'active' : '' }}" href="/penjualan"
                         role="button" aria-expanded="false">
                         <div
@@ -127,17 +138,6 @@
                                 style="color: {{ $title == 'Pelanggan' ? '#ffffff' : '#111111' }};"></i>
                         </div>
                         <span class="nav-link-text ms-1">Kelola Pelanggan</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown" style="height: 50px">
-                    <a class="nav-link {{ $title == 'Log Penjualan' ? 'active' : '' }}" href="/pelanggan"
-                        role="button" aria-expanded="false">
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-history"
-                                style="color: {{ $title == 'Log Penjualan' ? '#ffffff' : '#111111' }};"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Log Penjualan</span>
                     </a>
                 </li>
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 mt-3">Fitur Pelanggan</h6>
@@ -178,6 +178,16 @@
                                     style="color: #000000"></i>
                             </div>
                             <span class="nav-link-text ms-1">Register</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ $title == 'Kelola User' ? 'active' : '' }}" href="/kelola-user">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="{{ $title == 'Kelola User' ? 'text-white' : '' }} fa-solid fa-user me-1 ps-set"
+                                    style="color: #000000"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Kelola User</span>
                         </a>
                     </li>
                 @endif
@@ -293,26 +303,6 @@
             </div>
         </nav>
         @yield('content')
-        <div class="container-fluid py-4">
-            <footer class="footer pt-3 fixed ">
-                <div class="container-fluid">
-                    <div class="row align-items-center justify-content-lg-between">
-                        <div class="col-lg-6 mb-lg-0 mb-4">
-                            <div class="copyright text-center text-sm text-muted text-lg-start">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script>,
-                                made with <i class="fa fa-heart"></i> by
-                                <a href="https://www.creative-tim.com" class="font-weight-bold"
-                                    target="_blank">Rkhairulnm</a>
-                                for a better web.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
     </main>
 
     <!--   Core JS Files   -->
