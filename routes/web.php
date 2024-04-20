@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
@@ -70,6 +71,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/kelola-user', [SignController::class, 'index']);
     Route::get('/delete-user/{id}', [SignController::class, 'sistem']);
+
+    Route::get('/Log', [LogController::class, 'index']);
 
     Route::get('/print', function () {
         return view('layouts.struk.print', [

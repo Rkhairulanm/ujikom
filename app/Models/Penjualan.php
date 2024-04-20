@@ -18,6 +18,6 @@ class Penjualan extends Model
     }
     public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class, 'pelanggan_id', 'pelanggan_id');
+        return $this->hasMany(Pelanggan::class, 'pelanggan_id', 'pelanggan_id');
     }
 }
